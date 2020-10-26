@@ -15,6 +15,7 @@ const notificationSchema = new Schema<Notification>(
 			type: Types.ObjectId,
 			ref: 'post',
 		},
+		isSeen: Boolean
 	},
 	{ timestamps: true }
 );

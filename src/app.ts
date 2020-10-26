@@ -2,6 +2,8 @@ import express from 'express';
 import router from './notifications/notification.routes';
 const { protector } = require('pickly-protector-master');
 
+
+
 // const userEnricher = async (user) => {
 // 	let mongoUser = await User.findOne({ email: user.tokeninfo.email });
 // 	if (!mongoUser)
