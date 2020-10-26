@@ -26,6 +26,7 @@ export const NotificationService = {
 			if (getNotification) {
 				const seen = await Notifications.findOneAndUpdate(getNotification, {isSeen: true})
 			}
+			return getNotification;
 		} catch (err) {
 			console.log(err);
 		}
