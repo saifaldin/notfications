@@ -16,14 +16,6 @@ export const NotificationService = {
 	},
 	async create(req: express.Request, res: express.Response) {
 		try {
-			const receiver: Types.ObjectId = req.body.receiver;
-			const sender: Types.ObjectId = req.body.sender;
-			const post: Types.ObjectId = req.body.post;
-			// await Notifications.create({
-			// 	receiver,
-			// 	sender,
-			// 	post,
-			// });
 		} catch (err) {
 			console.log(err);
 		}
