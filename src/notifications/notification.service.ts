@@ -7,6 +7,12 @@ export const NotificationService = {
 	async getAll(req: express.Request, res: express.Response) {
 		try {
 			const data = await Notifications.find();
+			if (!data)
+				res.status(500).json({
+					status: 'error',
+					messege: 'cannot find user',
+				});
+
 			res.status(200).json({
 				status: 'success',
 				data,
@@ -17,18 +23,24 @@ export const NotificationService = {
 	},
 	async create(req: any, res: express.Response) {
 		try {
-			const sender: string | Types.ObjectId = req.user.mongouser._id;
+			const sender: string | Types.ObjectId = req.user.mongouser.id;
 			const post: string | Types.ObjectId = req.body.postId;
-			const user = await User.find({ posts: { $in: [post] } });
+			const user = await User.findOne({ posts: { $in: [post] } });
+			
 			if (!user)
-				res.status(500).json({
+				return res.status(500).json({
 					status: 'error',
 					messege: 'cannot find user',
 				});
-				
+			if (user.id === sender)
+				return res.status(400).json({
+					status: 'fail',
+					messege: 'you cannot upvote your own image',
+				});
+
 			const notification = await Notifications.create({
 				sender,
-				reciever: user._id,
+				receiver: user.id,
 				post,
 				isSeen: false,
 			});
