@@ -1,15 +1,15 @@
 import app from './app';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: __dirname + '../secrets/.env' });
 
 mongoose
-	.connect(
-		'mongodb+srv://saifaldin:qwer1234@cluster0.ht6ko.mongodb.net/pickly?retryWrites=true&w=majority',
-		{
-			useUnifiedTopology: true,
-			useNewUrlParser: true,
-			useFindAndModify: false,
-		}
-	)
+	.connect(process.env.DB_URI!, {
+		useUnifiedTopology: true,
+		useNewUrlParser: true,
+		useFindAndModify: false,
+	})
 	.then(() => console.log('connected to db'));
 
 app.listen(3001, () => {
