@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -w",
+    "build:watch": "tsc -w",
     "dev": "nodemon ./dist/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@m3ntorship/pickly-protector": "^0.0.2",
     "@types/express": "^4.17.8",
     "@types/mongoose": "^5.7.36",
     "@types/node": "^14.14.2",

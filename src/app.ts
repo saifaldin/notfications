@@ -1,22 +1,11 @@
 import express from 'express';
+import * as auth from './auth/auth.controller';
 import router from './notifications/notification.routes';
-const { protector } = require('pickly-protector-master');
 
-
-
-// const userEnricher = async (user) => {
-// 	let mongoUser = await User.findOne({ email: user.tokeninfo.email });
-// 	if (!mongoUser)
-// 		mongoUser = await User.create({
-// 			name: user.tokeninfo.name,
-// 			email: user.tokeninfo.email,
-// 		});
-// 	return mongoUser;
-// };
-var serviceAccount = require('./service-account.json');
-
+const { protector, serviceAccount, userEnricher } = auth;
 const app: express.Application = express();
-app.use(protector(serviceAccount));
+
+app.use(protector(serviceAccount, userEnricher));
 app.use('/notifications', router);
 
 export default app;
