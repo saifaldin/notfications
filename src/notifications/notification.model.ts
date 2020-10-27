@@ -23,6 +23,11 @@ const notificationSchema = new Schema<Notification>(
 	{ timestamps: true }
 );
 
+notificationSchema.post<Notification>(/^find/, function (doc, next) {
+	
+	next();
+});
+
 const Notifications = model<Notification>('notification', notificationSchema);
 
 export default Notifications;
