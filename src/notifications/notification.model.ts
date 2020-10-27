@@ -15,13 +15,14 @@ const notificationSchema = new Schema<Notification>(
 			type: Types.ObjectId,
 			ref: 'post',
 		},
+		isSeen: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{ timestamps: true }
 );
 
-const Notifications = model<Notification>(
-	'notification',
-	notificationSchema
-);
+const Notifications = model<Notification>('notification', notificationSchema);
 
 export default Notifications;

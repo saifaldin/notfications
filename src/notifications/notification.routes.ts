@@ -3,6 +3,6 @@ import { NotificationService } from './notification.service';
 
 const router = Router();
 
-router.route('/').get(NotificationService.getAll);
+router.route('/').get(NotificationService.create);
 
 export default router;
