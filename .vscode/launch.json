@@ -5,16 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "nodemonserver.js",
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\index.js",
-      "outFiles": [
-        "${workspaceFolder}/**/*.js"
-      ]
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/dist/server.js",
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "nodemon file",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "nodemon",
+      "program": "${file}",
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }

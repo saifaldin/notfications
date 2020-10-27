@@ -1,9 +1,12 @@
 import app from './app';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 mongoose
 	.connect(
-		'mongodb+srv://saifaldin:qwer1234@cluster0.ht6ko.mongodb.net/pickly?retryWrites=true&w=majority',
+		,
 		{
 			useUnifiedTopology: true,
 			useNewUrlParser: true,
