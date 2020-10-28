@@ -16,7 +16,7 @@ const viewed = async (notifications: Array<Notification>) => {
 };
 
 export const NotificationService = {
-	async getAll(req: any, res: express.Response) {
+	async getAll(req: express.Request, res: express.Response) {
 		try {
 			const notifications = await Notifications.find({
 				receiver: req.user.mongouser._id,
@@ -35,10 +35,10 @@ export const NotificationService = {
 			console.log(err);
 		}
 	},
-	async create(req: any, res: express.Response) {
+	async create(req: express.Request, res: express.Response) {
 		try {
-			const sender: string | Types.ObjectId = req.user.mongouser.id;
-			const post: string | Types.ObjectId = req.body.postId;
+			const sender: Types.ObjectId = req.user.mongouser.id;
+			const post: Types.ObjectId = req.body.postId;
 			const user = await User.findOne({ posts: { $in: [post] } });
 
 			if (!user)
@@ -68,7 +68,7 @@ export const NotificationService = {
 			console.log(err);
 		}
 	},
-	async clicked(req: any, res: express.Response) {
+	async clicked(req: express.Request, res: express.Response) {
 		try {
 			const notification = await Notifications.findById(req.params.id);
 			if (!notification)
