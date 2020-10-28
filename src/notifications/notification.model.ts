@@ -1,4 +1,4 @@
-import { Types, Document, Schema, model } from 'mongoose';
+import { Types, Schema, model } from 'mongoose';
 import { Notification } from './notification.interface';
 
 const notificationSchema = new Schema<Notification>(
@@ -15,7 +15,11 @@ const notificationSchema = new Schema<Notification>(
 			type: Types.ObjectId,
 			ref: 'post',
 		},
-		isSeen: {
+		isClicked: {
+			type: Boolean,
+			default: false,
+		},
+		isViewed: {
 			type: Boolean,
 			default: false,
 		},

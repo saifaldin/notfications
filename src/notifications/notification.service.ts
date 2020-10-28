@@ -1,23 +1,36 @@
 import express from 'express';
 import { Types } from 'mongoose';
 import Notifications from './notification.model';
+import { Notification } from './notification.interface';
 import User from '../auth/user.model';
+
+const viewed = async (notifications: Array<Notification>) => {
+	try {
+		notifications.forEach(async (notif) => {
+			notif.isViewed = true;
+			await notif.save();
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
 
 export const NotificationService = {
 	async getAll(req: any, res: express.Response) {
 		try {
-			const data = await Notifications.find({
+			const notifications = await Notifications.find({
 				receiver: req.user.mongouser._id,
 			}).sort('-createdAt');
-			if (!data)
+			if (!notifications)
 				res.status(500).json({
 					status: 'error',
 					messege: 'cannot find user',
 				});
 			res.status(200).json({
 				status: 'success',
-				data,
+				notifications,
 			});
+			viewed(notifications);
 		} catch (err) {
 			console.log(err);
 		}
@@ -43,7 +56,8 @@ export const NotificationService = {
 				sender,
 				receiver: user.id,
 				post,
-				isSeen: false,
+				isClicked: false,
+				isViewed: false,
 			});
 
 			res.status(201).json({
@@ -54,7 +68,7 @@ export const NotificationService = {
 			console.log(err);
 		}
 	},
-	async flag(req: any, res: express.Response) {
+	async clicked(req: any, res: express.Response) {
 		try {
 			const notification = await Notifications.findById(req.params.id);
 			if (!notification)
@@ -70,12 +84,11 @@ export const NotificationService = {
 					status: 'fail',
 					messege: 'you cannot flag other people notification',
 				});
-			notification.isSeen = true;
+			notification.isClicked = true;
 			notification.save();
-			res.status(201).json({
-				status: 'success',
-				data: notification,
-			});
+			res.status(302).redirect(
+				`http://localhost:3001/posts/${notification.post.toString()}`
+			);
 		} catch (err) {
 			console.log(err);
 		}

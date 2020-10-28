@@ -4,5 +4,6 @@ export interface Notification extends Document {
 	receiver: Types.ObjectId | string;
 	sender: Types.ObjectId | string;
 	post: Types.ObjectId | string;
-	isSeen: boolean;
+	isClicked: boolean;
+	isViewed: boolean;
 }
