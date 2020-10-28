@@ -1,5 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import Notifications from './notification.model';
+import { Router } from 'express';
 import { NotificationService } from './notification.service';
 
 const router = Router();
