@@ -1,4 +1,5 @@
 import express from 'express';
+import axios from 'axios';
 import { Types } from 'mongoose';
 import Notifications from './notification.model';
 import { Notification } from './notification.interface';
@@ -26,9 +27,27 @@ export const NotificationService = {
 					status: 'error',
 					messege: 'cannot find user',
 				});
+			const posts = await Promise.all(
+				notifications.map(async (notif) => {
+					const {
+						data: { data },
+					} = await axios.get(
+						`http://localhost:3001/posts/${notif.post.toString()}`,
+						{
+							headers: {
+								Authorization: `${req.headers.authorization}`,
+							},
+						}
+					);
+					return data;
+				})
+			);
+			const notifPopPost = notifications.map((notif, i) => {
+				return { ...notif.toJSON(), post: posts[i] };
+			});
 			res.status(200).json({
 				status: 'success',
-				notifications,
+				notifPopPost,
 			});
 			viewed(notifications);
 		} catch (err) {
