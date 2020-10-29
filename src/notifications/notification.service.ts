@@ -36,12 +36,14 @@ export const NotificationService = {
 		try {
 			const notifications = await Notifications.find({
 				receiver: req.user.mongouser._id,
-			}).sort('-createdAt');
-			if (!notifications)
-				res.status(500).json({
-					status: 'error',
-					messege: 'cannot find user',
-				});
+			})
+				.populate({
+					path: 'sender',
+					select: 'name email userImage',
+				})
+				.select('-__v')
+				.sort('-createdAt');
+
 			const notificationsPopPosts = await populatePosts(
 				notifications,
 				req.headers.authorization!
@@ -94,13 +96,13 @@ export const NotificationService = {
 			if (!notification)
 				return res.status(500).json({
 					status: 'error',
-					messege: 'cannot find user',
+					messege: 'cannot find notification',
 				});
 			if (
 				notification.receiver.toString() !==
 				req.user.mongouser.id.toString()
 			)
-				return res.status(400).json({
+				return res.status(401).json({
 					status: 'fail',
 					messege: 'you cannot flag other people notification',
 				});
