@@ -6,7 +6,7 @@ import { Notification } from './notification.interface';
 import User from '../auth/user.model';
 import { POSTS_API } from '../clients/posts';
 
-const viewed = async (notifications: Array<Notification>) => {
+const retrieved = async (notifications: Array<Notification>) => {
 	try {
 		notifications.forEach(async (notif) => {
 			notif.retrieved = true;
@@ -50,7 +50,7 @@ export const NotificationService = {
 				status: 'success',
 				notificationsPopPosts,
 			});
-			viewed(notifications);
+			retrieved(notifications);
 		} catch (err) {
 			console.log(err);
 		}
