@@ -88,7 +88,7 @@ export const NotificationService = {
 			console.log(err);
 		}
 	},
-	async clicked(req: express.Request, res: express.Response) {
+	async flag(req: express.Request, res: express.Response) {
 		try {
 			const notification = await Notifications.findById(req.params.id);
 			if (!notification)
@@ -106,9 +106,10 @@ export const NotificationService = {
 				});
 			notification.flagged = true;
 			notification.save();
-			res.status(302).redirect(
-				`http://localhost:3001/posts/${notification.post.toString()}`
-			);
+			res.status(200).json({
+				status: 'succes',
+				notification: notification.toJSON(),
+			});
 		} catch (err) {
 			console.log(err);
 		}

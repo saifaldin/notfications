@@ -8,6 +8,6 @@ router
 	.get(NotificationService.getAll)
 	.post(NotificationService.create);
 
-router.route('/:id').get(NotificationService.clicked);
+router.route('/:id').patch(NotificationService.flag);
 
 export default router;
