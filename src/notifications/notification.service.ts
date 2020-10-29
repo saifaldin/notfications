@@ -9,7 +9,7 @@ import { POSTS_API } from '../clients/posts';
 const viewed = async (notifications: Array<Notification>) => {
 	try {
 		notifications.forEach(async (notif) => {
-			notif.isViewed = true;
+			notif.retrieved = true;
 			await notif.save();
 		});
 	} catch (err) {
@@ -76,8 +76,8 @@ export const NotificationService = {
 				sender,
 				receiver: user.id,
 				post,
-				isClicked: false,
-				isViewed: false,
+				flagged: false,
+				retrieved: false,
 			});
 
 			res.status(201).json({
@@ -104,7 +104,7 @@ export const NotificationService = {
 					status: 'fail',
 					messege: 'you cannot flag other people notification',
 				});
-			notification.isClicked = true;
+			notification.flagged = true;
 			notification.save();
 			res.status(302).redirect(
 				`http://localhost:3001/posts/${notification.post.toString()}`

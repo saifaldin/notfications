@@ -15,11 +15,11 @@ const notificationSchema = new Schema<Notification>(
 			type: Types.ObjectId,
 			ref: 'post',
 		},
-		isClicked: {
+		flagged: {
 			type: Boolean,
 			default: false,
 		},
-		isViewed: {
+		retrieved: {
 			type: Boolean,
 			default: false,
 		},
