@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { get } from 'config';
 
 const POSTS_CLIENT = axios.create({
-	baseURL: 'http://localhost:3001',
+	baseURL: get('services.postsService'),
 });
 
 export const POSTS_API = {

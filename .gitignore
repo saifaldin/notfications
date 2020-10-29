@@ -105,4 +105,5 @@ dist
 .tern-port
 service-account.json
 package-lock.json
-secrets
+development.json
+config
