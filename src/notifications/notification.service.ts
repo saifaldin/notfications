@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 import Notifications from './notification.model';
 import { Notification } from './notification.interface';
 import User from '../auth/user.model';
+import { POSTS_API } from '../clients/posts';
 
 const viewed = async (notifications: Array<Notification>) => {
 	try {
@@ -16,6 +17,20 @@ const viewed = async (notifications: Array<Notification>) => {
 	}
 };
 
+const populatePosts = (notifications: Notification[], authorization: string) =>
+	Promise.all(
+		notifications.map(async (notification) => {
+			const {
+				data: { data },
+			} = await POSTS_API.getPostById(
+				notification.post.toString(),
+				authorization!
+			);
+			notification = { ...notification.toJSON(), post: data };
+			return notification;
+		})
+	);
+
 export const NotificationService = {
 	async getAll(req: express.Request, res: express.Response) {
 		try {
@@ -27,27 +42,13 @@ export const NotificationService = {
 					status: 'error',
 					messege: 'cannot find user',
 				});
-			const posts = await Promise.all(
-				notifications.map(async (notif) => {
-					const {
-						data: { data },
-					} = await axios.get(
-						`http://localhost:3001/posts/${notif.post.toString()}`,
-						{
-							headers: {
-								Authorization: `${req.headers.authorization}`,
-							},
-						}
-					);
-					return data;
-				})
+			const notificationsPopPosts = await populatePosts(
+				notifications,
+				req.headers.authorization!
 			);
-			const notifPopPost = notifications.map((notif, i) => {
-				return { ...notif.toJSON(), post: posts[i] };
-			});
 			res.status(200).json({
 				status: 'success',
-				notifPopPost,
+				notificationsPopPosts,
 			});
 			viewed(notifications);
 		} catch (err) {
