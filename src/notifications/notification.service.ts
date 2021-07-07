@@ -20,8 +20,13 @@ export const NotificationService = {
 			console.log(err);
 		}
 	},
-	async flag(req: express.Request, res: express.Response) {
+	async flag(req: express.Request, res: express.Response, id: Types.ObjectId) {
 		try {
+			const getNotification = await Notifications.findById(req.params.id)
+			if (getNotification) {
+				const seen = await Notifications.findOneAndUpdate(getNotification, {isSeen: true})
+			}
+			return getNotification;
 		} catch (err) {
 			console.log(err);
 		}
